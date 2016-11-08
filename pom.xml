@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--     Copyright 2005-2015 Red Hat, Inc.     Red Hat licenses this file to you under the Apache License, version     2.0 (the "License"); you may not use this file except in compliance     with the License.  You may obtain a copy of the License at        http://www.apache.org/licenses/LICENSE-2.0     Unless required by applicable law or agreed to in writing, software     distributed under the License is distributed on an "AS IS" BASIS,     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or     implied.  See the License for the specific language governing     permissions and limitations under the License.-->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
   <modelVersion>4.0.0</modelVersion>
+
   <groupId>io.fabric8.quickstarts</groupId>
-  <artifactId>vertx-simplest</artifactId>
+  <artifactId>vertx-web</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>Fabric8 :: Quickstarts :: Vert.x :: Fat Jar</name>
-  <description>Simple embedded vert.x fatjar</description>
+  <description>Vert.x web application as fat JAR</description>
+
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <!-- fabric8 version -->
@@ -20,7 +24,11 @@
     <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
     <maven-shade-plugin.version>2.3</maven-shade-plugin.version>
     <maven-surefire-plugin.version>2.18.1</maven-surefire-plugin.version>
+
+    <main.verticle>io.vertx.example.SimpleWebVerticle</main.verticle>
+    <vertx.version>3.3.3</vertx.version>
   </properties>
+
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -30,20 +38,28 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
+      <dependency>
+        <groupId>io.vertx</groupId>
+        <artifactId>vertx-dependencies</artifactId>
+        <version>${vertx.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
     </dependencies>
   </dependencyManagement>
+
   <dependencies>
+
     <!-- vertx -->
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-web</artifactId>
-      <version>${vertx.version}</version>
     </dependency>
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-dropwizard-metrics</artifactId>
-      <version>${vertx.version}</version>
     </dependency>
+
     <!-- logging -->
     <dependency>
       <groupId>log4j</groupId>
@@ -51,6 +67,7 @@
       <version>${log4j.version}</version>
     </dependency>
   </dependencies>
+
   <build>
     <defaultGoal>install</defaultGoal>
     <plugins>
@@ -63,10 +80,27 @@
           <target>1.8</target>
         </configuration>
       </plugin>
+
+      <!-- add manifest entries so f-m-p can run this app -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.0.2</version>
+        <configuration>
+          <archive>
+            <manifestEntries>
+              <Main-Class>io.vertx.core.Launcher</Main-Class>
+              <Main-Verticle>${main.verticle}</Main-Verticle>
+            </manifestEntries>
+          </archive>
+        </configuration>
+      </plugin>
+
+      <!-- package as fat-jar -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>${maven-shade-plugin.version}</version>
+        <version>2.4.3</version>
         <executions>
           <execution>
             <phase>package</phase>
@@ -78,7 +112,7 @@
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                   <manifestEntries>
                     <Main-Class>io.vertx.core.Launcher</Main-Class>
-                    <Main-Verticle>io.vertx.example.SimpleWeb</Main-Verticle>
+                    <Main-Verticle>${main.verticle}</Main-Verticle>
                   </manifestEntries>
                 </transformer>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
@@ -87,10 +121,12 @@
               </transformers>
               <artifactSet>
               </artifactSet>
+              <outputFile>${project.build.directory}/${project.artifactId}-${project.version}-fat.jar</outputFile>
             </configuration>
           </execution>
         </executions>
       </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
@@ -102,6 +138,7 @@
           </excludes>
         </configuration>
       </plugin>
+
       <plugin>
         <groupId>io.fabric8</groupId>
         <artifactId>fabric8-maven-plugin</artifactId>
@@ -110,7 +147,7 @@
           <generator>
             <config>
               <java-exec>
-                <mainClass>io.vertx.example.HelloWorldEmbedded</mainClass>
+                <mainClass>io.vertx.core.Launcher</mainClass>
               </java-exec>
             </config>
           </generator>
@@ -124,15 +161,22 @@
           </execution>
         </executions>
       </plugin>
-      <!-- allows the route to be ran via 'mvn exec:java' -->
+
+      <!-- allows the route to be ran via 'mvn compile exec:java' -->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
         <version>${exec-maven-plugin.version}</version>
         <configuration>
-          <mainClass>io.vertx.example.HelloWorldEmbedded</mainClass>
+          <mainClass>io.vertx.core.Launcher</mainClass>
+          <arguments>
+            <argument>run</argument>
+            <argument>${main.verticle}</argument>
+          </arguments>
         </configuration>
       </plugin>
+
     </plugins>
   </build>
+
 </project>
