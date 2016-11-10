@@ -25,7 +25,6 @@
     <maven-surefire-plugin.version>2.18.1</maven-surefire-plugin.version>
 
     <main.verticle>io.vertx.example.SimpleWebVerticle</main.verticle>
-    <vertx.version>3.3.3</vertx.version>
   </properties>
 
   <dependencyManagement>
