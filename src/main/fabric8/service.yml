@@ -1,5 +1,8 @@
+metadata:
+  labels:
+    expose: true
+
 spec:
   ports:
     - port: 80
       targetPort: 8080
-  type: LoadBalancer
