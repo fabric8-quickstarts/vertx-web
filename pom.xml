@@ -14,11 +14,11 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <!-- fabric8 version -->
-    <fabric8.version>2.2.179</fabric8.version>
+    <fabric8.version>2.2.181</fabric8.version>
     <log4j.version>1.2.17</log4j.version>
     <vertx.version>3.3.3</vertx.version>
     <!-- maven plugin versions -->
-    <fabric8.maven.plugin.version>3.2.1</fabric8.maven.plugin.version>
+    <fabric8.maven.plugin.version>3.2.4</fabric8.maven.plugin.version>
     <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
     <maven-surefire-plugin.version>2.18.1</maven-surefire-plugin.version>
 
