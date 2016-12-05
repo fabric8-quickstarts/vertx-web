@@ -14,7 +14,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <!-- fabric8 version -->
-    <fabric8.version>2.2.182</fabric8.version>
+    <fabric8.version>2.2.183</fabric8.version>
     <log4j.version>1.2.17</log4j.version>
     <vertx.version>3.3.3</vertx.version>
     <!-- maven plugin versions -->
