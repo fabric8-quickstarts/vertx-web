@@ -14,16 +14,16 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <!-- fabric8 version -->
-    <fabric8.version>2.2.183</fabric8.version>
+    <fabric8.version>2.2.192</fabric8.version>
     <log4j.version>1.2.17</log4j.version>
     <vertx.version>3.3.3</vertx.version>
     <!-- maven plugin versions -->
-    <fabric8.maven.plugin.version>3.2.8</fabric8.maven.plugin.version>
-    <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
-    <maven-surefire-plugin.version>2.18.1</maven-surefire-plugin.version>
+    <fabric8.maven.plugin.version>3.2.13</fabric8.maven.plugin.version>
+    <maven-compiler-plugin.version>3.6.0</maven-compiler-plugin.version>
+    <maven-surefire-plugin.version>2.19.1</maven-surefire-plugin.version>
 
     <vertx.verticle>io.vertx.example.SimpleWebVerticle</vertx.verticle>
-    <vertx-maven-plugin.version>0.1.2</vertx-maven-plugin.version>
+    <vertx-maven-plugin.version>1.0.1</vertx-maven-plugin.version>
   </properties>
 
   <dependencyManagement>
